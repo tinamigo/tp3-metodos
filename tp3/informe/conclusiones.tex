@@ -1,0 +1,19 @@
+\section{Conclusiones}\label{sec:conclusiones}
+A lo largo de este trabajo se logro percibir la dificultad de lograr una predicción precisa al empezar a manejar un modelo desconocido. Empezando con el análisis exploratorio, en el cual analizamos las diferentes características, y con ello, generamos nuestras primeras hipótesis. Luego, al utilizar el regresor y analizar su comportamiento fuimos capaces de reforzar nuestras afirmaciones o descartarlas. Tratamos con datos incompletos y cómo completarlos dependiendo de la existencia o no de una ``moda'' y tuvimos la oportunidad de agregar nueva información con intención de mejorar la predicción lograda hasta ese punto.
+A partir del modelo que encontramos podemos concluir:
+
+\begin{itemize}
+    \item Los indicadores \textit{Polio}, \textit{Diphteria} y \textit{Hepatitis B } son redundantes entre sí (es decir, utilizar más de uno no suma información). Esto podría decirnos que son expresión de un mismo fenómeno. Como los tres son tasas de vacunación infantil, podemos concluir que alcanza con usar cualquiera de los tres como indicador de la vacunación infantil en general.
+    
+    \item Podemos utilizar \textit{IRC} y no \textit{GDP}. Como el primero está compuesto en parte por el segundo, esto nos muestra que el resto de los indicadores que lo componen aportan información relevante a fines de explicar la expectativa de vida, dándole valor agregado al modelo.
+    
+    \item \textit{BMI} es un buen indicador para sintetizar la información relativa a la nutrición (como \textit{thinness}, entre cualquier edad).
+    
+    \item Nos llama la atención la influencia que tiene el indicador \textit{HIV/AIDS}. No creemos que la cantidad de muertes por esta enfermedad sea tan grande como para afectar la expectativa de vida por sí sola. Intuimos que debe ser indicador de un fenómeno de mayor influencia, como pueden ser la dificultad en el acceso a la atención pediátrica o a la salud sexual y reproductiva, entre otros. Tambien notamos que el HIV AIDS puede ser indicador del desarrollo de los paises ya que todos los paises desarrollados tienen un indice HIV bajo y los no desarrollados tienen un indice HIV alto.
+    
+    \item Encontramos que puede resultar útil dividir al dataset en distintas categorias (Como Developed/Developing) para observar caracteristicas propias de los datos y encontrar predictores mas especificos para cada caso, por ejemplo observamos que en el caso general el indice de HIV es muy importante mientras que en el caso de paises desarrollados éste indice no aporta nada ya que todos los paises tienen un mismo indice HIV bajo y se puede descartar esta caracteristica.
+\end{itemize}
+
+Por otro lado, a lo largo de este trabajo analizamos la correlación entre distintas variables, buscando indicadores que expliquen satisfactoriamente la Expectativa de vida. Sin embargo, estas correlaciones no implican causalidad. Conocer cómo se dan las relaciones de causalidad entre las distintas variables que exploramos, y también otras que no incluimos, puede resultar de mayor interés. Carecemos de las herramientas para hacer ese análisis, por lo que quedará como trabajo futuro.
+
+Analizamos los valores irregulares, o outliers de las características, la colinealidad y finalmente, los coeficientes obtenidos del modelo. Vimos la importancia de este mismo a la hora de entender el valor o peso que nuestras columnas seleccionadas tenían para la expectativa de vida.

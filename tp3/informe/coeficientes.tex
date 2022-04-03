@@ -1,0 +1,41 @@
+\section{Análisis de coeficientes}
+Ya con nuestro modelo final podemos realizar un ultimo análisis. Al aplicar cuadrados mínimos(sección \ref{sec:into_CML}) a un subconjunto de variables obtenemos un x$^*$. Este vector contiene los coeficientes que utilizamos en un nuevo conjunto de datos para obtener nuestro target.
+
+Al utilizar x$^*$ en un dato para predecirlo lo que estamos haciendo es aplicar al feature i una multiplicacion por el valor x$^*_i$.Entonces, lo que ese particular valor nos dice es el peso que el feature i tiene sobre el calculo de la y predicha. La ultima posicion del vector no corresponde a ningun feature, es una variable independiente.
+
+Entendiendo esto, vamos a analizar los valores de los coeficientes obtenidos en la ejecucion de nuestro ultimo modelo.
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ |p{4cm}||p{4cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{Peso de coeficientes} \\
+ \hline
+ Coeficiente& Valor\\
+ \hline
+ Valor independiente   & 70.02485369\\
+ Income composition of resources&2.64864459\\
+ Diphtheria &2.46057022\\
+ BMI    &2.06832015 \\
+ percentage expenditure&1.08700785\\
+ homicides(logaritmic)&-0.5486583\\
+ HIV/AIDS&-2.97126444\\
+ \hline
+\end{tabular}
+\caption{Tabla con coeficientes para cada caracteristica}
+\label{fig:table_coef}
+\end{table}
+
+
+En la tabla \ref{fig:table_coef} podemos ver los valores de los coeficientes, ordenados de mayor a menor.
+Como coeficiente de mayor valor tenemos la variable independiente, con una diferencia muy amplia respecto al resto. Esto nos podría estar indicando la cantidad de información que aun no podemos explicar en el modelo, que aun no tenemos característica a la que atribuirle ese peso.
+Como siguiente coeficiente tenemos el income composition of resources, esto nos da un índice de desarrollo humano basado en el manejo de los recursos de la nación. Podemos entender esto como la variable que define mejor la expectativa de vida entre las presentadas. Esto puede deberse a lo que representa como métrica. Si es alto los ciudadanos de un país se ven beneficiados, y eso se traduce en una mayor expectativa de vida. El income composition of resources tiene en cuenta la economía de un país sin separarlo de la relación con sus ciudadanos.
+Diphteria es la siguiente característica que fue priorizada por el modelo. El coeficiente es positivo, por lo que esto nos dice que países con un mayor grado de vacunación van a tener una mayor expectativa de vida que los que no lo tienen. Una cosa a notar es que la magnitud asignada al coeficiente es muy parecida a la de income composition of resources. Lo que nos indica es que la importancia de ambas características ara predecir la expectativa de vida son similares.
+El BMI es un poco menos relevante en el calculo de la expectativa de vida que las características previas. Esto podría deberse a que hay un margen de peso para el cual la expectativa de vida se mantiene estable, y los extremos que la modifican.
+
+Percentage expenditure esta fuertemente atado al GDP por lo que no tiene implicaciones tan directas sobre la expectativa de vida, pueden existir casos de países con GDP bajo y gasten muchos de sus recursos en salud, pero en términos económicos esos recursos sean menores a los gastados por un país con mayor GDP, utilizando un menor porcentaje del mismo.
+
+Los coeficientes restantes son negativos, esto implicaría que todos ellos restan a la expectativa de vida, que tiene sentido al ver que son enfermedades o causas de muerte directa(homicidios).
+La cantidad de homicidios tiene un coeficiente bajo, esto amerita mas analisis, pero a priori podemos adjudicarlo a la funcion aplicada. 
+Quien mas afecta negativamente la expectativa de vida es el HIV/AIDS, esto puede deberse a su correlacion con falta de educacion sexual, que esta relacionada a la educacion en general y  podria relacionarse con la expectativa de vida.

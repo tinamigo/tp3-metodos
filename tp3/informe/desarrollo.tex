@@ -1,0 +1,8 @@
+\section{Desarrollo}\label{sec:desarrollo}
+Para comenzar con el desarrollo del trabajo, implementamos los distintos métodos mencionados previamente en \texttt{C++} utilizando las bibliotecas de \texttt{Eigen} y \texttt{Pybind}. Luego, procedimos con distintas hipótesis acerca del comportamiento de los mismos, con el objetivo de encontrar los mejores parámetros y ahondar más en su comprensión.
+
+\subsection{Algoritmo CML}
+Hicimos una clase CML en lenguaje C++ con las funciones fit y predict(Entrenar y predecir). Utilizamos la biblioteca Eigen de C++ ya que simplifica las cuentas de vectores y matrices. También incorporamos el uso de Pybind que nos permite usar esta implementación en un Jupyter notebook, que es donde haremos los experimentos.
+
+Fit hace lo descripto en la sección
+\ref{sec:into_CML}, recibe un A como Matriz donde cada fila representa un $x_{i}$  y una matriz b donde cada fila representa un $y_{i}$, toma A como X agregándole una columna de unos y luego termina almacenando alpha siendo alpha $= (A^{t}A)^{-1}A^{t}Y$.

@@ -1,0 +1,45 @@
+\section{Introducción}
+    La expectativa de vida de un determinado país es una métrica cuyo análisis es del interés de varias áreas y ramas de la ciencia y economía. En el análisis de inversiones la expectativa de vida puede decirnos algo sobre la salud de su población, la longevidad de los trabajadores y que tan proclives son a situaciones de riesgo como accidentes.
+    Es de interés para el mercado inmobiliario pues la expectativa de vida de la población de un país puede cambiar el coste de la propiedad de manera substancial. Y del lado científico, entender los motivos detrás de la expectativa de vida da un indicador de problemas que aún no fueron atacados lo suficiente y podrían tener un gran impacto.
+    
+    En este sentido la predicción automática de dicho valor a partir de los datos recogidos por la OMS y, posiblemente aumentados con datos demográficos del área geográfica en que se encuentra, podría ser una solución ideal. Existen herramientas que nos permiten realizar estas predicciones, y así mismo la de cualquier otra variable para la cual deseemos estimar. 
+    
+    La herramienta en cuestión será un algoritmo de clasificación supervisado que entrenamos con un conjunto de datos de la OMS, que incluye la expectativa de vida, ya conocida. Una vez entrenado, evaluamos la calidad de la predicción con distintas métricas.
+    
+    El algoritmo sigue el método de cuadrados mínimos lineales\cite{MLS:qhe}, que dado un conjunto de pares ordenados (variables independientes y variable dependiente), intenta encontrar la función continua que dependa de las variables independientes, y que mejor se aproxime a la variable dependiente.
+    
+    Para evaluar la calidad de las predicciones realizadas, usaremos  \textit{Relative Standard Error} (RSE), \textit{R-Squared} (R2) y \textit{Adjusted R-Squared}(Adjusted R2) como métricas \cite{Met:qhe}.
+    
+    \subsection{Conjunto de datos}
+    Para las experimentaciones contamos con un conjunto de datos de la OMS con las siguientes características:
+    \begin{itemize}
+     \item Country: País de donde vienen los demás datos, vale como ID.
+     \item  Status: Variable categórica que se divide entre Developed o Developing.
+     \item  Alcohol: Registrado per cápita para mayores de 15, en litros de alcohol puro.
+     \item Mortalidad: Métricas acerca de la mortalidad de un grupo(Adult mortality, Infant deaths y under-five deaths, normalmente tomadas como porcentaje cada 1000 habitantes.
+     \item Percentage expenditure: Porcentaje del PBI utilizado en salud.
+     \item Enfermedad: varias características relacionadas con enfermedades(Porcentaje de inmunización de Hepatitis B,difteria y Polio en el primer año de edad, casos cada 1000 habitantes de Measles y muertes por VIH/SIDA en el primer año de edad).
+     \item BMI: Índice de peso promedio de la población de un país entera.
+     \item Métricas generales: GDP (PBI), Population, Income composition of resources(Índice de desarrollo humano en términos del manejo del gasto de recursos) y Schooling(años de educación).
+     \item Thinness: Porcentaje de desnutrición separada entre las edades de 5 a 9, y 10 a 19.
+    \end{itemize}
+    
+    La característica que intentamos predecir es la expectativa de vida, la cantidad en años que se espera viva una persona en promedio.
+    \subsection{Cuadrados Mínimos Lineales}\label{sec:into_CML}
+    El algoritmo de cuadrados mínimos lineales toma un conjunto de pares ordenados o mediciones ($x_{i},y_{i}$) con $0\leq i\leq m$ (En nuestro caso $x_{i}$ es un vector fila en el que cada columna representa una característica para un país dado, e $y_{i}$ representa la característica que se quiere predecir), y encuentra una función $f(x)$ que pertenezca a una familia de funciones $\mathcal{F}$ que mejor aproxime a los datos.
+    Entonces, dado un conjunto de funciones ${\phi_{1}, . . . ,\phi_{n}}$ linealmente independientes, definimos $\mathcal{F} = \{ f (x) = \sum_{j=1}^{n}{c_{j} \phi_{j}} \}.$ El problema de cuadrados mínimos lineales busca minimizar la suma de los errores, que se traduce como $\underset{f\in \mathcal{F}}{min}$ $\sum_{i=1}^{m}{f(x_{i}-y_{i})^{2}}$ , que es lo mismo que resolver $\underset{\alpha \in \mathbb{R^{n}}}{min} \lVert A\alpha-\beta \rVert^{2}_{2}$ definiendo $A$ con $a_{ij} = \phi_{j}(x_{i})$, $\alpha$ con $\alpha_{j}=c_{j}$ y $\beta_{i}=y_{i}$.
+    
+    En nuestro caso nos interesa hacer una regresión lineal, por lo que nuestra $f(x)$ debe quedar como una combinación lineal de las columnas de $x_{i}$ más una constante, así que tomamos $\phi_{n}(x) = 1$ y para los otros $\phi_{j}(x)=e^{j} x$ siendo $e^{j}$ el j-ésimo vector canónico. 
+    
+    Entonces para encontrar el mínimo $\lVert(A\alpha-\beta)\rVert^{2}_{2}$ utilizamos la ecuación normal de Gauss $A^{t}A\alpha = A^{t}\beta$ que al resolverla nos da el $\alpha$ que minimiza.
+    \subsection{R$^2$ y R$^2$ Ajustado}\label{sec:intro_R2/R2}
+    Dado un modelo $\hat{f}$ y una observación $(x_{i},y_{i})$, definimos la aproximación $\hat{f}(x_{i})=\hat{y_{i}}$ , el error $e_{i}=\hat{y_{i}}-y_{i} $ y la media de todos los $\hat{y_{i}}$ como $\Bar{y}$ . Definimos entonces RSS como $\sum_{i=1}^{N}e_{i}^{2}$ y TSS(Total sum of squares) como $\sum_{i=1}^{N}(\Bar{y}-y_{i})^{2}$. RSS es una métrica de variabilidad que el modelo no puede explicar y TSS es la variabilidad de los datos. Si las restamos obtenemos la variabilidad que el modelo si puede explicar.
+    R$^2$ entonces es definida como la división entre la variabilidad explicada con la variabilidad total, o escrito de otro modo $\dfrac{TSS-RSS}{TSS}$.
+    
+    Esta métrica trae un problema, y es que no tiene ningún tipo de penalización por agregar variables, lo que suele mejorar las métricas pero no implica que la variable agregada ayude a explicar los datos, solo el ruido.
+    
+    Es por esto que se propone una nueva métrica conocida como R$^2$ Ajustado. La fórmula para esta métrica es 1-$\dfrac{(1-R^2)(N-1)}{N-p-1}$ donde N es la cantidad de filas del sistema de ecuaciones y p la cantidad de columnas del mismo.
+    
+    
+    \subsection{RSE}\label{sec:intro_RSE}
+    El Relative Squared Error(RSE) es una variante de RMSE ajustada al número de columnas utilizadas en el modelo. Cuanto más bajo es su valor, mejor es el modelo y se escribe, utilizando las definiciones de la sección \ref{sec:intro_R2/R2} como RSE =$\sqrt{\dfrac{RSS}{N-2}}$
